@@ -15,6 +15,7 @@ import DrCardLong from "../../components/doctors/DrCardLong";
 import { getName } from "../../services/helpers/DoctorHelpers";
 import doctorData from "../../public/api/beneGetDoctor.json";
 import { setCurrentAppointment } from "../../redux/actions";
+import * as analytics from "../../analytics/analytics";
 class Contact extends React.Component {
 	constructor(props) {
 		super(props);
@@ -34,8 +35,10 @@ class Contact extends React.Component {
 	componentDidMount() {
 		console.log({
 			props: this.props,
-			doctorData
+			doctorData,
 		});
+
+		analytics.page("consult/get-in-touch");
 	}
 	componentDidUpdate(prevProps) {
 		// console.log({
@@ -52,7 +55,7 @@ class Contact extends React.Component {
 			evt,
 			Router,
 			appointment,
-			doctor
+			doctor,
 		});
 		const { appointments, ...rest } = doctor;
 		if (appointment) {
@@ -60,8 +63,8 @@ class Contact extends React.Component {
 				...appointment,
 				doctorName: getName(doctor),
 				doctor: {
-					...rest
-				}
+					...rest,
+				},
 			});
 		}
 	};
@@ -96,7 +99,7 @@ class Contact extends React.Component {
 						"btm-logo",
 						"content",
 						"no-overlay",
-						"brand-heading"
+						"brand-heading",
 					]}
 					// extraButton={
 					//   <Button versions={["outline", "block"]}>
@@ -217,12 +220,12 @@ class Contact extends React.Component {
 	}
 }
 
-const mapStateToProps = state => ({
-	currentAppointment: state.appointment.currentAppointment
+const mapStateToProps = (state) => ({
+	currentAppointment: state.appointment.currentAppointment,
 });
 Contact.defaultProps = {
-	doctors: [...doctorData.data]
+	doctors: [...doctorData.data],
 };
 export default connect(mapStateToProps, {
-	setCurrentAppointment
+	setCurrentAppointment,
 })(Contact);

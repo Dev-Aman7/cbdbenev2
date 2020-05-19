@@ -7,6 +7,9 @@ import Link from "next/link";
 import SliderLine from "./SliderLine";
 import { getProductImage } from "../services/helpers/product";
 import ProductCard from "./ProductCard";
+
+import * as analytics from "../analytics/analytics";
+
 const BundleProducts = ({
 	heading,
 	subHeading,
@@ -18,6 +21,7 @@ const BundleProducts = ({
 	parentClass,
 	versions,
 }) => {
+	console.log("bundle products");
 	const componentClass = `c-category-products`;
 	const versionClass = versions
 		.map((el) => `${componentClass}--${el}`)

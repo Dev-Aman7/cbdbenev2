@@ -7,7 +7,7 @@ import {
 	getProductImage,
 	getProductAttributes,
 	getVisibleProducts,
-	getProductDescription
+	getProductDescription,
 } from "../../services/helpers/product";
 import Heading from "../../components/Heading";
 import TitleList from "../../components/TItleList";
@@ -21,8 +21,9 @@ import projectSettings from "../../constants/projectSettings";
 import apiList from "../../services/apis/apiList";
 import Error from "next/error";
 const product = {
-	title: "CBD Isolate 500 mg"
+	title: "CBD Isolate 500 mg",
 };
+import * as analytics from "../../analytics/analytics";
 
 const Product = ({ product, allProducts, ...props }) => {
 	const [isScrolled, setIsScrolled] = useState(false);
@@ -30,6 +31,10 @@ const Product = ({ product, allProducts, ...props }) => {
 		setIsScrolled(true);
 		document.body.scrollTop = document.documentElement.scrollTop = 0;
 	}, isScrolled);
+
+	useEffect(() => {
+		analytics.page("shop/pid");
+	}, []);
 	const router = useRouter();
 	const { pid } = router.query;
 
@@ -39,19 +44,19 @@ const Product = ({ product, allProducts, ...props }) => {
 			{
 				title: "title",
 				subTitle: "sub title",
-				image: "/images/oil.png"
+				image: "/images/oil.png",
 			},
 			{
 				title: "lorem",
 				subTitle: "sub title",
-				image: "/images/capsule-img.png"
+				image: "/images/capsule-img.png",
 			},
 			{
 				title: "ipsum",
 				subTitle: "sub title",
-				image: "/images/cbd-oil.png"
-			}
-		]
+				image: "/images/cbd-oil.png",
+			},
+		],
 	};
 
 	const { productList } = state;
@@ -151,7 +156,7 @@ Product.getInitialProps = async ({ query, res: resMain }) => {
 	const allRes = await fetch(apiList.getAllProducts);
 	const allProductObj = await allRes.json();
 	const allProducts = getVisibleProducts(allProductObj.products).filter(
-		el => el._id !== query.pid
+		(el) => el._id !== query.pid
 	);
 	if (product.length && product[0] && productObj.status) {
 		return {
@@ -160,17 +165,17 @@ Product.getInitialProps = async ({ query, res: resMain }) => {
 			productObj,
 			allProducts,
 			allProductObj,
-			reviews: reviews.reviews
+			reviews: reviews.reviews,
 		};
 	}
 	resMain.statusCode = 404;
 	return {
 		err: {
-			statusCode: 404
-		}
+			statusCode: 404,
+		},
 	};
 };
-export default connect(state => ({
+export default connect((state) => ({
 	cart: state.cart,
-	user: state.user
+	user: state.user,
 }))(Product);

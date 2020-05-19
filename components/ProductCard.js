@@ -5,6 +5,8 @@ import { addToCart } from "../redux/actions/cart";
 import { directAddToCart, getProductTitle } from "../services/helpers/product";
 import Link from "next/link";
 import { showCartBar } from "../redux/actions/drawers";
+
+import * as analytics from "../analytics/analytics";
 const ProductCard = ({
 	versions,
 	parentClass,
@@ -32,7 +34,7 @@ const ProductCard = ({
 		}
 	};
 	const CardUpper = () => (
-		<>
+		<div onClick={() => analytics.click(product)}>
 			<div className={`${componentClass}__img-wrapper`}>
 				<img className={`${componentClass}__img`} src={image} alt={title} />
 			</div>
@@ -40,17 +42,10 @@ const ProductCard = ({
 				<p className={`${componentClass}__title`}>{title}</p>
 				<p className={`${componentClass}__sub-title`}>{subTitle}</p>
 			</div>
-		</>
+		</div>
 	);
 	return (
-		<div
-			onClick={() =>
-				console.log({
-					product,
-				})
-			}
-			className={className}
-		>
+		<div className={className}>
 			{product && product._id ? (
 				<Link href={`/shop/${getProductTitle(product).replace(/ /g, "-")}`}>
 					<a className={`${componentClass}__overlay-link`}>
@@ -63,7 +58,10 @@ const ProductCard = ({
 			<div className={`${componentClass}__btn-wrapper`}>
 				{price && <p className={`${componentClass}__price`}>${price}</p>}
 				<Button
-					onClick={() => addToCartFn(product)}
+					onClick={() => {
+						addToCartFn(product);
+						analytics.addProduct(product);
+					}}
 					parentClass={componentClass}
 					theme="brand"
 				>

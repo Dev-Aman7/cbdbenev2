@@ -26,6 +26,9 @@ import { Collapse } from "reactstrap";
 import { Icon } from "antd";
 // import { shop as shopData } from '../../site-content'
 import parse from "html-react-parser";
+
+import * as analytics from "../../analytics/analytics";
+
 const Shop = ({ productList, combos, ...props }) => {
 	const [shopData, setShopData] = useState({
 		title: "",
@@ -37,6 +40,9 @@ const Shop = ({ productList, combos, ...props }) => {
 	const [isFilter, setIsFilter] = useState(false);
 	const [selectedFilters, setSelectedFilters] = useState("");
 
+	useEffect(() => {
+		analytics.page("shop");
+	}, []);
 	useEffect(() => {
 		console.log("UseEffect");
 		Axios.get(`${adminUrl}/Shop/get`)

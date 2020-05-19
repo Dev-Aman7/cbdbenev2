@@ -18,6 +18,8 @@ import { ic_clear } from "react-icons-kit/md/";
 import Icon from "react-icons-kit";
 import { ic_error_outline } from "react-icons-kit/md/";
 
+import * as analytics from "../analytics";
+
 const { baseUrl } = projectSettings;
 const Checkout = ({ addAddress, user, isLoading, ...props }) => {
 	const [activeAddress, setActiveAddress] = useState(1);
@@ -31,6 +33,11 @@ const Checkout = ({ addAddress, user, isLoading, ...props }) => {
 	const [failedRes, setFailedRes] = useState(null);
 	const [isSuccess, setIsSuccess] = useState(null);
 	const [order, setOrder] = useState(null);
+
+	useEffect(() => {
+		analytics.page("checkout");
+	}, []);
+
 	useEffect(() => {
 		if (currentStep === 2) {
 			if (props.isEditable) {
@@ -46,7 +53,7 @@ const Checkout = ({ addAddress, user, isLoading, ...props }) => {
 	const onInfoSubmit = (e, values, address, addressShip) => {
 		console.log({
 			e,
-			values
+			values,
 		});
 		const {
 			email,
@@ -61,21 +68,21 @@ const Checkout = ({ addAddress, user, isLoading, ...props }) => {
 			saveaddress,
 			saveaddress_ship,
 			addressSelect,
-			addressSelect_ship
+			addressSelect_ship,
 		} = values;
 		const addressA = {
 			...address,
 			email,
 			firstname,
 			lastname,
-			phone
+			phone,
 		};
 		const addressB = {
 			...addressShip,
 			email: email_ship,
 			firstname: firstname_ship,
 			lastname: lastname_ship,
-			phone: phone_ship
+			phone: phone_ship,
 		};
 		const allAddresses = props.address.address || [];
 		const idTime = new Date().getTime();
@@ -83,11 +90,11 @@ const Checkout = ({ addAddress, user, isLoading, ...props }) => {
 		const userId = user._id;
 		const newAddressA = {
 			...addressA,
-			id: idTime
+			id: idTime,
 		};
 		const newAddressB = {
 			...addressB,
-			id: idTime + 10
+			id: idTime + 10,
 		};
 		const isDuplicateA = checkAddressDuplicate(newAddressA, allAddresses);
 		const isDuplicateB = checkAddressDuplicate(newAddressB, allAddresses);
@@ -117,12 +124,12 @@ const Checkout = ({ addAddress, user, isLoading, ...props }) => {
 			? {
 					...addressSelect,
 					// phone,
-					email
+					email,
 			  }
 			: {
 					...address,
 					email,
-					phone
+					phone,
 			  };
 		setInfoDetails({ ...values });
 		setCurrentStep(1);
@@ -135,19 +142,19 @@ const Checkout = ({ addAddress, user, isLoading, ...props }) => {
 		setShippingDetail(values);
 		setCurrentStep(2);
 		console.log({
-			shippingSendData
+			shippingSendData,
 		});
 		setShippingSendData(shippingSendData);
 	};
-	const onPaymentSubmit = order => {
+	const onPaymentSubmit = (order) => {
 		if (order) {
 			setOrder(order);
 			setIsSuccess(true);
 		}
 	};
-	const onPaymentFail = res => {
+	const onPaymentFail = (res) => {
 		console.log({
-			res
+			res,
 		});
 		switch (res.config.url) {
 			case baseUrl + "/ship/confirm/":
@@ -169,7 +176,7 @@ const Checkout = ({ addAddress, user, isLoading, ...props }) => {
 		setIsModal(true);
 	};
 	console.log({
-		isLoading
+		isLoading,
 	});
 
 	let checkoutClass = "";
@@ -379,16 +386,16 @@ const Checkout = ({ addAddress, user, isLoading, ...props }) => {
 	);
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
 	address: state.address,
 	user: state.user,
 	isLoading: state.loading.isLoading,
 	isEditable: state.cart.isEditable,
-	cartItems: state.cart.items
+	cartItems: state.cart.items,
 });
 const mapActionToProps = {
 	addAddress,
-	setEditable
+	setEditable,
 };
 
 export default connect(mapStateToProps, mapActionToProps)(Checkout);

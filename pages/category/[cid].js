@@ -22,6 +22,8 @@ import projectSettings from "../../constants/projectSettings";
 import fetch from "isomorphic-unfetch";
 // import { category as categoryData } from "../../site-content";
 import parse from "html-react-parser";
+import * as analytics from "../../analytics/analytics";
+
 const Category = ({ productList, combos, ...props }) => {
 	let [categoryData, setCategoryData] = useState({
 		category: {
@@ -80,6 +82,7 @@ const Category = ({ productList, combos, ...props }) => {
 
 	useEffect(() => {
 		console.log("UseEffect");
+		analytics.page("category/cid");
 		Axios.get(`${adminUrl}/Category/get`)
 			.then((result) => {
 				console.log("Result got md", result);
@@ -159,6 +162,7 @@ const Category = ({ productList, combos, ...props }) => {
 									subTitle={el.subTitle}
 									image={el.image}
 									price={el.price && el.price.sale_price}
+									// onClick={()=>analytics.click()}
 								/>
 							</div>
 						))}

@@ -34,18 +34,18 @@ import { getAllProducts } from "../../services/apis/products";
 //   payload: null
 // });
 
-export const getProducts = () => dispatch => {
-  getAllProducts()
-  .then(res => {
-    console.log({res})
-    if(res.data && res.data.products){
-      dispatch({
-        type: SET_PRODUCTS,
-        payload: res.data.products.map(el => addSlugToProduct(el))
-      })
-    }
-  })
-  .catch(err => {
-    console.log({err})
-  })
-}
+export const getProducts = () => (dispatch) => {
+	getAllProducts()
+		.then((res) => {
+			console.log("all products are", res.data.products[0].productid);
+			if (res.data && res.data.products) {
+				dispatch({
+					type: SET_PRODUCTS,
+					payload: res.data.products.map((el) => addSlugToProduct(el)),
+				});
+			}
+		})
+		.catch((err) => {
+			console.log({ err });
+		});
+};

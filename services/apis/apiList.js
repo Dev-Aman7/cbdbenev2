@@ -58,5 +58,10 @@ const apiList = {
 
 	//blog
 	getBlogs: `${adminUrl}/Blog/get/tag`,
+
+	//analytics
+	addPage: `${baseUrl}/analytics/page/add`,
+	addProduct: `${baseUrl}/analytics/product/add`,
+	addClick: `${baseUrl}/analytics/click/add`,
 };
 export default apiList;

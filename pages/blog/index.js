@@ -9,7 +9,7 @@ import Layout from "../../components/Layouts/Layout";
 import Article from "../../components/blog/Article";
 
 import * as actionCreators from "../../redux/actions/blog";
-
+import * as analytics from "../../analytics/analytics";
 let prev = 0;
 let more = true;
 class BlogPage extends React.Component {
@@ -51,6 +51,7 @@ class BlogPage extends React.Component {
 	};
 
 	componentDidMount = () => {
+		analytics.page("blog");
 		console.log("component mounted");
 		// const func = this.props.get;
 		// func(0, "All")

@@ -6,6 +6,9 @@ import Flickity from "react-flickity-component";
 import Link from "next/link";
 import SliderLine from "./SliderLine";
 import { getProductTitle } from "../services/helpers/product";
+
+import * as analytics from "../analytics/analytics";
+
 const CategoryProducts = ({
 	heading,
 	subHeading,
@@ -16,6 +19,7 @@ const CategoryProducts = ({
 	bg,
 	pp,
 }) => {
+	console.log("Category products");
 	const sliderLine = useRef(null);
 	const className = classNames("c-category-products", {
 		[`c-category-products--${bg}`]: bg,

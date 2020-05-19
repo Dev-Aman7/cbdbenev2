@@ -20,6 +20,8 @@ import parse from "html-react-parser";
 import { Carousel } from "react-bootstrap";
 import { adminUrl, imageUrl } from "../constants/projectSettings";
 import Axios from "axios";
+
+import * as analytics from "../analytics/analytics";
 // import Head from 'next/head'
 // import Nav from '../components/nav'
 // import Header from '../components/Header'
@@ -80,6 +82,7 @@ class Home extends React.Component {
 
 	componentDidMount() {
 		console.log("Comp mounted");
+		analytics.page("index");
 		Axios.get(`${adminUrl}/Home/get`)
 			.then((result) => {
 				console.log("Result got md", result);
@@ -328,7 +331,7 @@ class Home extends React.Component {
 							<div className="willness-img">
 								<img
 									className="img-fluid"
-									src={`${imageUrl}/Wellness-Image.png`}
+									src={`${imageUrl}/Wellness-Image-1.png`}
 								></img>
 							</div>
 						</div>
